@@ -11,7 +11,9 @@ const config: webpack.Configuration = {
       path: require.resolve('path-browserify'),
     },
   },
-  entry: './src/index.ts',
+  entry: { 
+    app: './src/index.ts',
+  },
   target: 'web',
   devtool: 'source-map',
   module: {
