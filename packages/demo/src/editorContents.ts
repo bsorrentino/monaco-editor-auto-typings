@@ -1,4 +1,5 @@
-// export const editorContents = `import fetch from 'node-fetch'
+// export const editorContents = `
+// import fetch from 'node-fetch'
 // import React from 'react'
 // import { LocalStorageCache } from 'monaco-editor-auto-typings'
 
@@ -14,9 +15,14 @@
 // React.useState<number>('Not a number :s')
 // new LocalStorageCache().getFile() // Argument missing!`;
 
-export const editorContents = `
-import { uuidV4 } from "@daz.is/uuid-v4";
-import React from 'react';
+// export const editorContents = `
+// import { uuidV4 } from "@daz.is/uuid-v4";
+// import React from 'react';
 
-const uuid = uuidV4();
+// const uuid = uuidV4();
+// `
+
+export const editorContents = `
+import type from "@types/xrm"
+import { uuidV4 } from "@daz.is/uuid-v4";
 `
