@@ -5286,14 +5286,14 @@
   "resolved" "https://registry.npmjs.org/modify-values/-/modify-values-1.0.1.tgz"
   "version" "1.0.1"
 
-"monaco-editor-auto-typings-demo@file:/Users/softphone/WORKSPACES/GITHUB.me/monaco-editor-auto-typings/packages/demo":
+"monaco-editor-auto-typings-demo@file:/Users/bsorrentino/WORKSPACES/GITHUB.me/JS_NOTEBOOK/monaco-editor-auto-typings/packages/demo":
   "resolved" "file:packages/demo"
   "version" "0.3.2"
   dependencies:
     "monaco-editor" "^0.33.0"
     "monaco-editor-auto-typings" "^0.3.2"
 
-"monaco-editor-auto-typings@^0.3.2", "monaco-editor-auto-typings@file:/Users/softphone/WORKSPACES/GITHUB.me/monaco-editor-auto-typings/packages/core":
+"monaco-editor-auto-typings@^0.3.2", "monaco-editor-auto-typings@file:/Users/bsorrentino/WORKSPACES/GITHUB.me/JS_NOTEBOOK/monaco-editor-auto-typings/packages/core":
   "resolved" "file:packages/core"
   "version" "0.3.2"
   dependencies:
