@@ -1,4 +1,5 @@
-// export const editorContents = `import fetch from 'node-fetch'
+// export const editorContents = `
+// import fetch from 'node-fetch'
 // import React from 'react'
 // import { LocalStorageCache } from 'monaco-editor-auto-typings'
 
@@ -14,9 +15,26 @@
 // React.useState<number>('Not a number :s')
 // new LocalStorageCache().getFile() // Argument missing!`;
 
-export const editorContents = `
-import { uuidV4 } from "@daz.is/uuid-v4";
-import React from 'react';
+// export const editorContents = `
+// import { uuidV4 } from "@daz.is/uuid-v4";
+// import React from 'react';
 
-const uuid = uuidV4();
+// const uuid = uuidV4();
+// `
+
+export const editorContents = `
+/// <reference types="@types/xrm" />
+
+import {html, render} from 'lit-html';
+
+let c:Partial<Xrm.Metadata.EntityMetadata> = {}
+
+// This is a lit-html template function. It returns a lit-html template.
+const helloTemplate = (name) => html\`<div>Hello ${name}!</div>\`;
+
+// This renders <div>Hello Steve!</div> to the document body
+render(helloTemplate('Steve'), document.body);
+
+// This updates to <div>Hello Kevin!</div>, but only updates the ${name} part
+render(helloTemplate('Kevin'), document.body);
 `
