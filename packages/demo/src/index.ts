@@ -19,6 +19,7 @@ monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
   // esModuleInterop: true,
   // allowJs: true,      
   jsx: monaco.languages.typescript.JsxEmit.React,
+  experimentalDecorators: true
   // typeRoots: [TYPES_ROOT]
 })
 // monaco.languages.typescript.typescriptDefaults.setEagerModelSync(true);

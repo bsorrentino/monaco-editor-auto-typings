@@ -4,20 +4,14 @@ import * as path from 'path';
 
 const importPath_ext_to_remove = ['.js', '.mjs']
 
-const normalizeImportPath = ( importPath: string  ) => {
+const shouldBeImportPathNormalized = ( importPath: string  ) => {
   const ext = path.extname( importPath )
-  // console.log( 'normalizeImportPath', importPath, `[${ext}]` )
-  if( ext.length >= 3 ) { 
-    for( let i = 0 ; i < importPath_ext_to_remove.length; ++i ) {
-      if( ext === importPath_ext_to_remove[i] ) {
-        const result = importPath.slice(0, -ext.length )
-        // console.log( 'normalizeImportPath result', result )
-        return result
-      } 
-    }
-  }
-  return importPath
+  return ( ext.length >= 3 ) ?
+    importPath_ext_to_remove.find( (v) => v === ext ) : undefined
 }
+
+const normalizeImportPath = ( importPath: string, ext: string  ) => importPath.slice(0, -ext.length )
+
 
 export class DependencyParser {
   private REGEX_CLEAN = /[\n|\r]/g;
@@ -39,6 +33,37 @@ export class DependencyParser {
   }
 
   private resolvePath(importPath: string, isTypeOnly:boolean, parent: ImportResourcePath | string): ImportResourcePath {
+    
+    const result = this._resolvePath( importPath, isTypeOnly, parent )
+    
+    console.groupCollapsed(`resolvePath: ${importPath}`)
+    console.group( 'input' )
+    console.log( 'importPath', importPath )
+    console.log( 'isTypeOnly', isTypeOnly )
+    console.log( 'parent', parent )
+    console.groupEnd()
+
+    if( result.importPath ) {
+      const ext = shouldBeImportPathNormalized( result.importPath )
+      if( ext ) {
+        switch( result.kind ) {
+          case 'package': 
+          case 'relative':
+            result.importPath = normalizeImportPath( result.importPath, ext )
+            break
+          case 'relative-in-package':
+            // result.importPath = normalizeImportPath( result.importPath, ext )
+            const importPath = normalizeImportPath( result.importPath, ext )
+            // result.packageName = path.basename(importPath)
+            result.importPath = importPath
+        }
+      }
+    }
+
+    return result
+  }
+
+  private _resolvePath(importPath: string, isTypeOnly:boolean, parent: ImportResourcePath | string): ImportResourcePath {
     if (typeof parent === 'string') {
       if (importPath.startsWith('.')) {
         return {
@@ -51,7 +76,7 @@ export class DependencyParser {
         return {
           kind: 'package',
           packageName: `${segments[0]}/${segments[1]}`,
-          importPath: normalizeImportPath(segments.slice( 2 ).join('/')),
+          importPath: segments.slice( 2 ).join('/'),
           isTypeOnly: isTypeOnly
         };
       } else {
@@ -59,7 +84,7 @@ export class DependencyParser {
         return {
           kind: 'package',
           packageName: segments[0],
-          importPath: normalizeImportPath(segments.slice(1).join('/')),
+          importPath: segments.slice(1).join('/'),
           isTypeOnly: isTypeOnly
         };
       }
@@ -75,7 +100,7 @@ export class DependencyParser {
               kind: 'relative-in-package',
               packageName: parent.packageName,
               sourcePath: path.join(parent.sourcePath, parent.importPath),
-              importPath: normalizeImportPath(importPath),
+              importPath: importPath,
               isTypeOnly: isTypeOnly
             };
           } else if (importPath.startsWith('@')) {
@@ -83,7 +108,7 @@ export class DependencyParser {
             return {
               kind: 'package',
               packageName: `${segments[0]}/${segments[1]}`,
-              importPath: normalizeImportPath(segments.slice(2).join('/')),
+              importPath: segments.slice(2).join('/'),
               isTypeOnly: isTypeOnly
             };
           } else {
@@ -91,7 +116,7 @@ export class DependencyParser {
             return {
               kind: 'package',
               packageName: segments[0],
-              importPath: normalizeImportPath(segments.slice(1).join('/')),
+              importPath: segments.slice(1).join('/'),
               isTypeOnly: isTypeOnly
             };
           }

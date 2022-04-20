@@ -22,7 +22,7 @@
 // const uuid = uuidV4();
 // `
 
-export const editorContents = `
+export const editorContents2 = `
 /// <reference types="@types/xrm" />
 
 import {html, render} from 'lit-html';
@@ -37,4 +37,20 @@ render(helloTemplate('Steve'), document.body);
 
 // This updates to <div>Hello Kevin!</div>, but only updates the ${name} part
 render(helloTemplate('Kevin'), document.body);
+`
+
+export const editorContents = `
+import {html, css, LitElement, customElement, property} from 'lit-element';
+
+@customElement('simple-greeting')
+export class SimpleGreeting extends LitElement {
+  static styles = css\`p { color: blue }\`;
+
+  @property()
+  name = 'Somebody';
+
+  render() {
+    return html\`<p>Hello, $\{this.name}!</p>\`;
+  }
+}
 `
