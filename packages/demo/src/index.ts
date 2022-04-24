@@ -48,6 +48,10 @@ AutoTypings.create(editor, {
     log.innerHTML = t;
     mountPoint.appendChild(log);
     mountPoint.scrollTop = mountPoint.scrollHeight;
+
+    console.groupCollapsed( t )
+    console.log( 'progressUpdate:', u )
+    console.groupEnd()
   },
 
   // Log errors to a div console
