@@ -12,6 +12,7 @@ import { SourceResolver } from './SourceResolver';
 import * as path from 'path';
 import { invokeUpdate } from './invokeUpdate';
 import { RecursionDepth } from './RecursionDepth';
+import { normalizePath, pathContainsSourceExt } from './ImportPath';
 
 export class ImportResolver {
   private loadedFiles: string[];
@@ -257,28 +258,29 @@ export class ImportResolver {
         return { source, at: path.join(importResource.sourcePath, importResource.importPath) };
       }
     } else {
+      const partialPath = path.join(importResource.sourcePath, importResource.importPath)
       for (const append of appends) {
-        const fullPath = path.join(importResource.sourcePath, importResource.importPath) + append;
-        const source = await this.resolveSourceFile(pkgName, version, fullPath);
-        invokeUpdate(
-          {
-            type: 'AttemptedLookUpFile',
-            path: path.join(pkgName, fullPath),
-            success: !!source,
-          },
-          this.options
-        );
-        if (source) {
+          const fullPath = partialPath + append;
+          const source = await this.resolveSourceFile(pkgName, version, fullPath);
           invokeUpdate(
             {
-              type: 'LookedUpTypeFile',
+              type: 'AttemptedLookUpFile',
               path: path.join(pkgName, fullPath),
-              success: true,
+              success: !!source,
             },
             this.options
           );
-          return { source, at: fullPath };
-        }
+          if (source) {
+            invokeUpdate(
+              {
+                type: 'LookedUpTypeFile',
+                path: path.join(pkgName, fullPath),
+                success: true,
+              },
+              this.options
+            );
+            return { source, at: fullPath };
+          }
       }
     }
 
