@@ -12,7 +12,7 @@ import { SourceResolver } from './SourceResolver';
 import * as path from 'path';
 import { invokeUpdate } from './invokeUpdate';
 import { RecursionDepth } from './RecursionDepth';
-import { normalizePath, pathContainsSourceExt } from './ImportPath';
+import { pathContainsSourceExt, pathReplaceSourceExt, pathReplaceSourceExtAtEnd } from './Paths';
 
 export class ImportResolver {
   private loadedFiles: string[];
@@ -180,11 +180,10 @@ export class ImportResolver {
           isTypeOnly: importResource.isTypeOnly
         };
       } else {
-        const typingPackageName = `@types/${
-          importResource.packageName.startsWith('@')
+        const typingPackageName = `@types/${importResource.packageName.startsWith('@')
             ? importResource.packageName.slice(1).replace(/\//, '__')
             : importResource.packageName
-        }`;
+          }`;
         const pkgJsonTypings = await this.resolvePackageJson(typingPackageName, this.versions?.[typingPackageName]);
         if (pkgJsonTypings) {
           const pkg = JSON.parse(pkgJsonTypings);
@@ -230,6 +229,8 @@ export class ImportResolver {
   private async loadSourceFileContents(
     importResource: ImportResourcePathRelativeInPackage
   ): Promise<{ source: string; at: string } | null> {
+
+
     const progressUpdatePath = path.join(
       importResource.packageName,
       importResource.sourcePath,
@@ -246,21 +247,40 @@ export class ImportResolver {
     const pkgName = importResource.packageName;
     const version = this.getVersion(importResource.packageName);
 
-    let appends = ['.d.ts', '/index.d.ts', '.ts', '.tsx', '/index.ts', '/index.tsx'];
+    if (pathContainsSourceExt(importResource.importPath)) {
 
-    if (appends.map(append => importResource.importPath.endsWith(append)).reduce((a, b) => a || b, false)) {
-      const source = await this.resolveSourceFile(
-        pkgName,
-        version,
-        path.join(importResource.sourcePath, importResource.importPath)
-      );
+      const fullPath = path.join(importResource.sourcePath, pathReplaceSourceExt(importResource.importPath, '.d.ts'));
+      const source = await this.resolveSourceFile(pkgName, version, fullPath);
       if (source) {
-        return { source, at: path.join(importResource.sourcePath, importResource.importPath) };
+        invokeUpdate(
+          {
+            type: 'LookedUpTypeFile',
+            path: path.join(pkgName, fullPath),
+            success: true,
+          },
+          this.options
+        );
+        return { source, at: fullPath };
       }
-    } else {
-      const partialPath = path.join(importResource.sourcePath, importResource.importPath)
-      for (const append of appends) {
-          const fullPath = partialPath + append;
+
+    }
+    else {
+      let appends = ['.d.ts', '/index.d.ts', '.ts', '.tsx', '/index.ts', '/index.tsx'];
+
+      if (appends.map(append => importResource.importPath.endsWith(append)).reduce((a, b) => a || b, false)) {
+        const source = await this.resolveSourceFile(
+          pkgName,
+          version,
+          path.join(importResource.sourcePath, importResource.importPath)
+        );
+        if (source) {
+          return { source, at: path.join(importResource.sourcePath, importResource.importPath) };
+        }
+
+      } else {
+
+        for (const append of appends) {
+          const fullPath = path.join(importResource.sourcePath, pathReplaceSourceExtAtEnd(importResource.importPath, append))
           const source = await this.resolveSourceFile(pkgName, version, fullPath);
           invokeUpdate(
             {
@@ -281,8 +301,10 @@ export class ImportResolver {
             );
             return { source, at: fullPath };
           }
+        }
       }
     }
+
 
     const pkgJson = await this.resolvePackageJson(
       pkgName,
@@ -330,9 +352,9 @@ export class ImportResolver {
     });
   }
 
-  private createModel(source: string, uri: monaco.Uri, isTypeOnly:boolean ) {
+  private createModel(source: string, uri: monaco.Uri, isTypeOnly: boolean) {
     // console.log(`before: createModel( ${ uri.toString(true)} )`, isTypeOnly)
-    if( !isTypeOnly )
+    if (!isTypeOnly)
       uri = uri.with({ path: uri.path.replace('@types/', '') });
     // console.log(`after: createModel( ${ uri.toString(true)} )`)
     if (!this.monaco.editor.getModel(uri)) {
