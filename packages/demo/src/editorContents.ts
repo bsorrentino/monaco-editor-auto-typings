@@ -40,8 +40,8 @@ render(helloTemplate('Kevin'), document.body);
 `
 
 export const editorContents = `
-import {html, css, LitElement, customElement, property} from 'lit-element';
-
+import {html, css, LitElement } from 'lit-element';
+import {customElement, property} from 'lit/decorators.js';
 @customElement('simple-greeting')
 export class SimpleGreeting extends LitElement {
   static styles = css\`p { color: blue }\`;
@@ -51,6 +51,23 @@ export class SimpleGreeting extends LitElement {
 
   render() {
     return html\`<p>Hello, $\{this.name}!</p>\`;
+  }
+}
+`
+
+export const editorContents3 = `
+import {html, css, LitElement} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+
+@customElement('simple-greeting')
+export class SimpleGreeting extends LitElement {
+  static styles = css\`p { color: blue }\`;
+
+  @property()
+  name = 'Somebody';
+
+  render() {
+    return html\`<p>Hello, \${this.name}!</p>\`;
   }
 }
 `
