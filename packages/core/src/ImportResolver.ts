@@ -12,7 +12,7 @@ import { SourceResolver } from './SourceResolver';
 import * as path from 'path';
 import { invokeUpdate } from './invokeUpdate';
 import { RecursionDepth } from './RecursionDepth';
-import { pathContainsSourceExt, pathReplaceSourceExt, pathReplaceSourceExtAtEnd } from './Paths';
+import * as PatchPaths from './Patch.Paths';
 
 export class ImportResolver {
   private loadedFiles: string[];
@@ -247,9 +247,9 @@ export class ImportResolver {
     const pkgName = importResource.packageName;
     const version = this.getVersion(importResource.packageName);
 
-    if (pathContainsSourceExt(importResource.importPath)) {
+    if (PatchPaths.pathContainsSourceExt(importResource.importPath)) {
 
-      const fullPath = path.join(importResource.sourcePath, pathReplaceSourceExt(importResource.importPath, '.d.ts'));
+      const fullPath = path.join(importResource.sourcePath, PatchPaths.pathReplaceAnySourceExt(importResource.importPath, '.d.ts'));
       const source = await this.resolveSourceFile(pkgName, version, fullPath);
       if (source) {
         invokeUpdate(
@@ -280,7 +280,7 @@ export class ImportResolver {
       } else {
 
         for (const append of appends) {
-          const fullPath = path.join(importResource.sourcePath, pathReplaceSourceExtAtEnd(importResource.importPath, append))
+          const fullPath = path.join(importResource.sourcePath, PatchPaths.pathAppendOrReplaceSourceExt(importResource.importPath, append))
           const source = await this.resolveSourceFile(pkgName, version, fullPath);
           invokeUpdate(
             {
