@@ -103,7 +103,7 @@ var ImportResourcePath_1 = require("./ImportResourcePath");
 var path = __importStar(require("path"));
 var invokeUpdate_1 = require("./invokeUpdate");
 var RecursionDepth_1 = require("./RecursionDepth");
-var Paths_1 = require("./Paths");
+var PatchPaths = __importStar(require("./Patch.Paths"));
 var ImportResolver = /** @class */ (function () {
     function ImportResolver(options) {
         var e_1, _a;
@@ -367,8 +367,8 @@ var ImportResolver = /** @class */ (function () {
                         };
                         pkgName = importResource.packageName;
                         version = this.getVersion(importResource.packageName);
-                        if (!(0, Paths_1.pathContainsSourceExt)(importResource.importPath)) return [3 /*break*/, 2];
-                        fullPath = path.join(importResource.sourcePath, (0, Paths_1.pathReplaceSourceExt)(importResource.importPath, '.d.ts'));
+                        if (!PatchPaths.pathContainsSourceExt(importResource.importPath)) return [3 /*break*/, 2];
+                        fullPath = path.join(importResource.sourcePath, PatchPaths.pathReplaceAnySourceExt(importResource.importPath, '.d.ts'));
                         return [4 /*yield*/, this.resolveSourceFile(pkgName, version, fullPath)];
                     case 1:
                         source = _b.sent();
@@ -398,7 +398,7 @@ var ImportResolver = /** @class */ (function () {
                     case 5:
                         if (!!appends_1_1.done) return [3 /*break*/, 8];
                         append = appends_1_1.value;
-                        fullPath = path.join(importResource.sourcePath, (0, Paths_1.pathReplaceSourceExtAtEnd)(importResource.importPath, append));
+                        fullPath = path.join(importResource.sourcePath, PatchPaths.pathAppendOrReplaceSourceExt(importResource.importPath, append));
                         return [4 /*yield*/, this.resolveSourceFile(pkgName, version, fullPath)];
                     case 6:
                         source = _b.sent();
