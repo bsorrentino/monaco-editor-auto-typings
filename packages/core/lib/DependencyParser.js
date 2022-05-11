@@ -68,16 +68,27 @@ var DependencyParser = /** @class */ (function () {
             return result;
         });
     };
+    /**
+     * [resolvePath description]
+     *
+     * @param   {string}              importPath  [importPath description]
+     * @param   {boolean}             isTypeOnly  [isTypeOnly description]
+     * @param   {ImportResourcePath}  parent      [parent description]
+     *
+     * @return  {ImportResourcePath}              [return description]
+     */
     DependencyParser.prototype.resolvePath = function (importPath, isTypeOnly, parent) {
+        var isImportPathRelative = function () { return importPath.startsWith('.') || importPath.endsWith('.d.ts'); };
+        var isImportPathScoped = function () { return importPath.startsWith('@'); };
         if (typeof parent === 'string') {
-            if (importPath.startsWith('.')) {
+            if (isImportPathRelative()) {
                 return {
                     kind: 'relative',
                     importPath: importPath,
                     sourcePath: parent,
                 };
             }
-            else if (importPath.startsWith('@')) {
+            else if (isImportPathScoped()) {
                 var segments = importPath.split('/');
                 return {
                     kind: 'package',
@@ -103,7 +114,7 @@ var DependencyParser = /** @class */ (function () {
                 case 'relative':
                     throw Error('TODO2?');
                 case 'relative-in-package':
-                    if (importPath.startsWith('.')) {
+                    if (isImportPathRelative()) {
                         return {
                             kind: 'relative-in-package',
                             packageName: parent.packageName,
@@ -112,7 +123,7 @@ var DependencyParser = /** @class */ (function () {
                             isTypeOnly: isTypeOnly
                         };
                     }
-                    else if (importPath.startsWith('@')) {
+                    else if (isImportPathScoped()) {
                         var segments = importPath.split('/');
                         return {
                             kind: 'package',
