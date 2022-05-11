@@ -20,15 +20,29 @@ export class DependencyParser {
       });
   }
 
+  
+  /**
+   * [resolvePath description]
+   *
+   * @param   {string}              importPath  [importPath description]
+   * @param   {boolean}             isTypeOnly  [isTypeOnly description]
+   * @param   {ImportResourcePath}  parent      [parent description]
+   *
+   * @return  {ImportResourcePath}              [return description]
+   */
   private resolvePath(importPath: string, isTypeOnly:boolean, parent: ImportResourcePath | string): ImportResourcePath {
+
+    const isImportPathRelative =  () => importPath.startsWith('.') || importPath.endsWith('.d.ts')
+    const isImportPathScoped =  () => importPath.startsWith('@')
+
     if (typeof parent === 'string') {
-      if (importPath.startsWith('.')) {
+      if ( isImportPathRelative() ) {
         return {
           kind: 'relative',
           importPath,
           sourcePath: parent,
         };
-      } else if (importPath.startsWith('@')) {
+      } else if ( isImportPathScoped() ) {
         const segments = importPath.split('/');
         return {
           kind: 'package',
@@ -52,7 +66,7 @@ export class DependencyParser {
         case 'relative':
           throw Error('TODO2?');
         case 'relative-in-package':
-          if (importPath.startsWith('.')) {
+          if (isImportPathRelative()) {
             return {
               kind: 'relative-in-package',
               packageName: parent.packageName,
@@ -60,7 +74,7 @@ export class DependencyParser {
               importPath: importPath,
               isTypeOnly: isTypeOnly
             };
-          } else if (importPath.startsWith('@')) {
+          } else if (isImportPathScoped()) {
             const segments = importPath.split('/');
             return {
               kind: 'package',
