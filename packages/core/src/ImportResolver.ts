@@ -14,6 +14,8 @@ import { invokeUpdate } from './invokeUpdate';
 import { RecursionDepth } from './RecursionDepth';
 import * as PatchPaths from './Patch.Paths';
 
+// const _LOG = console.log
+
 export class ImportResolver {
   private loadedFiles: string[];
   private dependencyParser: DependencyParser;
@@ -132,22 +134,22 @@ export class ImportResolver {
     } as const;
 
     if (this.options.onlySpecifiedPackages) {
-      if (!this.versions?.[importResource.packageName] && !this.versions?.['@types/' + importResource.packageName]) {
+      if (!this.getVersion(importResource.packageName) && !this.getVersion(`@types/${importResource.packageName}`) ) {
         invokeUpdate(failedProgressUpdate, this.options);
         return;
       }
     }
-
+    
     const doesPkgJsonHasSubpath = importResource.importPath?.length ?? 0 > 0;
     let pkgJsonSubpath = doesPkgJsonHasSubpath ? `/${importResource.importPath}` : '';
     let pkgJson = await this.resolvePackageJson(
       importResource.packageName,
-      this.versions?.[importResource.packageName],
+      this.getVersion(importResource.packageName),
       doesPkgJsonHasSubpath ? importResource.importPath : undefined
     );
 
     if (!pkgJson && doesPkgJsonHasSubpath) {
-      pkgJson = await this.resolvePackageJson(importResource.packageName, this.versions?.[importResource.packageName]);
+      pkgJson = await this.resolvePackageJson(importResource.packageName, this.getVersion(importResource.packageName));
       pkgJsonSubpath = '';
     }
 
@@ -372,6 +374,8 @@ export class ImportResolver {
     version?: string,
     subPath?: string
   ): Promise<string | undefined> {
+
+
     const uri = path.join(packageName + (version ? `@${version}` : ''), subPath ?? '', 'package.json');
     let isAvailable = false;
     let content: string | undefined = undefined;
