@@ -73,7 +73,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FileSystemCache = void 0;
 var fs = __importStar(require("fs"));
 var path = __importStar(require("path"));
-var FileSystemCache = /** @class */ (function () {
+var FileSystemCache = (function () {
     function FileSystemCache(basePath) {
         this.basePath = basePath;
     }
@@ -93,32 +93,32 @@ var FileSystemCache = /** @class */ (function () {
                 switch (_d.label) {
                     case 0:
                         _d.trys.push([0, 6, 7, 8]);
-                        return [4 /*yield*/, fs.promises.readdir(this.basePath)];
+                        return [4, fs.promises.readdir(this.basePath)];
                     case 1:
                         _a = __values.apply(void 0, [_d.sent()]), _b = _a.next();
                         _d.label = 2;
                     case 2:
-                        if (!!_b.done) return [3 /*break*/, 5];
+                        if (!!_b.done) return [3, 5];
                         file = _b.value;
-                        return [4 /*yield*/, fs.promises.unlink(path.join(this.basePath, file))];
+                        return [4, fs.promises.unlink(path.join(this.basePath, file))];
                     case 3:
                         _d.sent();
                         _d.label = 4;
                     case 4:
                         _b = _a.next();
-                        return [3 /*break*/, 2];
-                    case 5: return [3 /*break*/, 8];
+                        return [3, 2];
+                    case 5: return [3, 8];
                     case 6:
                         e_1_1 = _d.sent();
                         e_1 = { error: e_1_1 };
-                        return [3 /*break*/, 8];
+                        return [3, 8];
                     case 7:
                         try {
                             if (_b && !_b.done && (_c = _a.return)) _c.call(_a);
                         }
                         finally { if (e_1) throw e_1.error; }
-                        return [7 /*endfinally*/];
-                    case 8: return [2 /*return*/];
+                        return [7];
+                    case 8: return [2];
                 }
             });
         });

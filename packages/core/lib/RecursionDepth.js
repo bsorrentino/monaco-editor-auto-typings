@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RecursionDepth = void 0;
-var RecursionDepth = /** @class */ (function () {
+var RecursionDepth = (function () {
     function RecursionDepth(options, fileRecursionDepth, packageRecursionDepth) {
         if (fileRecursionDepth === void 0) { fileRecursionDepth = 0; }
         if (packageRecursionDepth === void 0) { packageRecursionDepth = 0; }

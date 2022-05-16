@@ -11,12 +11,6 @@ var invokeUpdate = function (progress, options) {
         case 'ResolveNewImports':
             textual += "";
             break;
-        // case 'DetectedImport':
-        //   textual += `at "${progress.source}" the import "${progress.importPath}" was detected`;
-        //   break;
-        // case 'CompletedImport':
-        //   textual += `at "${progress.source}" the import "${progress.importPath}" was completed`;
-        //   break;
         case 'LookedUpTypeFile':
             textual += "\"".concat(progress.path, "\" was ").concat(progress.success ? 'sucessfully' : 'not sucessfully', " looked up");
             break;

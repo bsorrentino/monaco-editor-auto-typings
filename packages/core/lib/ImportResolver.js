@@ -104,7 +104,7 @@ var path = __importStar(require("path"));
 var invokeUpdate_1 = require("./invokeUpdate");
 var RecursionDepth_1 = require("./RecursionDepth");
 var PatchPaths = __importStar(require("./Patch.Paths"));
-var ImportResolver = /** @class */ (function () {
+var ImportResolver = (function () {
     function ImportResolver(options) {
         var e_1, _a;
         this.options = options;
@@ -152,7 +152,7 @@ var ImportResolver = /** @class */ (function () {
                 switch (_e.label) {
                     case 0:
                         if (depth.shouldStop()) {
-                            return [2 /*return*/];
+                            return [2];
                         }
                         imports = this.dependencyParser.parseDependencies(source, parent);
                         _e.label = 1;
@@ -161,15 +161,15 @@ var ImportResolver = /** @class */ (function () {
                         imports_1 = __values(imports), imports_1_1 = imports_1.next();
                         _e.label = 2;
                     case 2:
-                        if (!!imports_1_1.done) return [3 /*break*/, 7];
+                        if (!!imports_1_1.done) return [3, 7];
                         importCall = imports_1_1.value;
                         _e.label = 3;
                     case 3:
                         _e.trys.push([3, 5, , 6]);
-                        return [4 /*yield*/, this.resolveImport(importCall, depth)];
+                        return [4, this.resolveImport(importCall, depth)];
                     case 4:
                         _e.sent();
-                        return [3 /*break*/, 6];
+                        return [3, 6];
                     case 5:
                         e_2 = _e.sent();
                         if (this.options.onError) {
@@ -178,22 +178,22 @@ var ImportResolver = /** @class */ (function () {
                         else {
                             console.error(e_2);
                         }
-                        return [3 /*break*/, 6];
+                        return [3, 6];
                     case 6:
                         imports_1_1 = imports_1.next();
-                        return [3 /*break*/, 2];
-                    case 7: return [3 /*break*/, 10];
+                        return [3, 2];
+                    case 7: return [3, 10];
                     case 8:
                         e_3_1 = _e.sent();
                         e_3 = { error: e_3_1 };
-                        return [3 /*break*/, 10];
+                        return [3, 10];
                     case 9:
                         try {
                             if (imports_1_1 && !imports_1_1.done && (_d = imports_1.return)) _d.call(imports_1);
                         }
                         finally { if (e_3) throw e_3.error; }
-                        return [7 /*endfinally*/];
-                    case 10: return [2 /*return*/];
+                        return [7];
+                    case 10: return [2];
                 }
             });
         });
@@ -206,27 +206,27 @@ var ImportResolver = /** @class */ (function () {
                     case 0:
                         hash = this.hashImportResourcePath(importResource);
                         if (this.loadedFiles.includes(hash)) {
-                            return [2 /*return*/];
+                            return [2];
                         }
                         this.loadedFiles.push(hash);
                         _a = importResource.kind;
                         switch (_a) {
-                            case 'package': return [3 /*break*/, 1];
-                            case 'relative': return [3 /*break*/, 5];
-                            case 'relative-in-package': return [3 /*break*/, 6];
+                            case 'package': return [3, 1];
+                            case 'relative': return [3, 5];
+                            case 'relative-in-package': return [3, 6];
                         }
-                        return [3 /*break*/, 8];
-                    case 1: return [4 /*yield*/, this.resolveImportFromPackageRoot(importResource)];
+                        return [3, 8];
+                    case 1: return [4, this.resolveImportFromPackageRoot(importResource)];
                     case 2:
                         packageRelativeImport = _b.sent();
-                        if (!packageRelativeImport) return [3 /*break*/, 4];
-                        return [4 /*yield*/, this.resolveImportInPackage(packageRelativeImport, depth.nextPackage().nextFile())];
-                    case 3: return [2 /*return*/, _b.sent()];
-                    case 4: return [3 /*break*/, 8];
+                        if (!packageRelativeImport) return [3, 4];
+                        return [4, this.resolveImportInPackage(packageRelativeImport, depth.nextPackage().nextFile())];
+                    case 3: return [2, _b.sent()];
+                    case 4: return [3, 8];
                     case 5: throw Error('Not implemented yet');
-                    case 6: return [4 /*yield*/, this.resolveImportInPackage(importResource, depth.nextFile())];
-                    case 7: return [2 /*return*/, _b.sent()];
-                    case 8: return [2 /*return*/];
+                    case 6: return [4, this.resolveImportInPackage(importResource, depth.nextFile())];
+                    case 7: return [2, _b.sent()];
+                    case 8: return [2];
                 }
             });
         });
@@ -236,13 +236,13 @@ var ImportResolver = /** @class */ (function () {
             var contents, source, at;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.loadSourceFileContents(importResource)];
+                    case 0: return [4, this.loadSourceFileContents(importResource)];
                     case 1:
                         contents = _a.sent();
-                        if (!contents) return [3 /*break*/, 3];
+                        if (!contents) return [3, 3];
                         source = contents.source, at = contents.at;
                         this.createModel(source, this.monaco.Uri.parse(this.options.fileRootPath + path.join("node_modules/".concat(importResource.packageName), at)), importResource.isTypeOnly);
-                        return [4 /*yield*/, this.resolveImportsInFile(source, {
+                        return [4, this.resolveImportsInFile(source, {
                                 kind: 'relative-in-package',
                                 packageName: importResource.packageName,
                                 sourcePath: path.dirname(at),
@@ -252,17 +252,17 @@ var ImportResolver = /** @class */ (function () {
                     case 2:
                         _a.sent();
                         _a.label = 3;
-                    case 3: return [2 /*return*/];
+                    case 3: return [2];
                 }
             });
         });
     };
     ImportResolver.prototype.resolveImportFromPackageRoot = function (importResource) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+        var _a, _b, _c, _d, _e;
         return __awaiter(this, void 0, void 0, function () {
             var failedProgressUpdate, doesPkgJsonHasSubpath, pkgJsonSubpath, pkgJson, pkg, typings, typingPackageName, pkgJsonTypings, pkg_1, typings;
-            return __generator(this, function (_k) {
-                switch (_k.label) {
+            return __generator(this, function (_f) {
+                switch (_f.label) {
                     case 0:
                         failedProgressUpdate = {
                             type: 'LookedUpPackage',
@@ -271,26 +271,26 @@ var ImportResolver = /** @class */ (function () {
                             success: false,
                         };
                         if (this.options.onlySpecifiedPackages) {
-                            if (!((_a = this.versions) === null || _a === void 0 ? void 0 : _a[importResource.packageName]) && !((_b = this.versions) === null || _b === void 0 ? void 0 : _b['@types/' + importResource.packageName])) {
+                            if (!this.getVersion(importResource.packageName) && !this.getVersion("@types/".concat(importResource.packageName))) {
                                 (0, invokeUpdate_1.invokeUpdate)(failedProgressUpdate, this.options);
-                                return [2 /*return*/];
+                                return [2];
                             }
                         }
-                        doesPkgJsonHasSubpath = (_d = (_c = importResource.importPath) === null || _c === void 0 ? void 0 : _c.length) !== null && _d !== void 0 ? _d : 0 > 0;
+                        doesPkgJsonHasSubpath = (_b = (_a = importResource.importPath) === null || _a === void 0 ? void 0 : _a.length) !== null && _b !== void 0 ? _b : 0 > 0;
                         pkgJsonSubpath = doesPkgJsonHasSubpath ? "/".concat(importResource.importPath) : '';
-                        return [4 /*yield*/, this.resolvePackageJson(importResource.packageName, (_e = this.versions) === null || _e === void 0 ? void 0 : _e[importResource.packageName], doesPkgJsonHasSubpath ? importResource.importPath : undefined)];
+                        return [4, this.resolvePackageJson(importResource.packageName, this.getVersion(importResource.packageName), doesPkgJsonHasSubpath ? importResource.importPath : undefined)];
                     case 1:
-                        pkgJson = _k.sent();
-                        if (!(!pkgJson && doesPkgJsonHasSubpath)) return [3 /*break*/, 3];
-                        return [4 /*yield*/, this.resolvePackageJson(importResource.packageName, (_f = this.versions) === null || _f === void 0 ? void 0 : _f[importResource.packageName])];
+                        pkgJson = _f.sent();
+                        if (!(!pkgJson && doesPkgJsonHasSubpath)) return [3, 3];
+                        return [4, this.resolvePackageJson(importResource.packageName, this.getVersion(importResource.packageName))];
                     case 2:
-                        pkgJson = _k.sent();
+                        pkgJson = _f.sent();
                         pkgJsonSubpath = '';
-                        _k.label = 3;
+                        _f.label = 3;
                     case 3:
-                        if (!pkgJson) return [3 /*break*/, 7];
+                        if (!pkgJson) return [3, 7];
                         pkg = JSON.parse(pkgJson);
-                        if (!(pkg.typings || pkg.types)) return [3 /*break*/, 4];
+                        if (!(pkg.typings || pkg.types)) return [3, 4];
                         typings = pkg.typings || pkg.types;
                         this.createModel(pkgJson, this.monaco.Uri.parse("".concat(this.options.fileRootPath, "node_modules/").concat(importResource.packageName).concat(pkgJsonSubpath, "/package.json")), importResource.isTypeOnly);
                         (0, invokeUpdate_1.invokeUpdate)({
@@ -300,20 +300,20 @@ var ImportResolver = /** @class */ (function () {
                             success: true,
                         }, this.options);
                         this.setVersion(importResource.packageName, pkg.version);
-                        return [2 /*return*/, {
+                        return [2, {
                                 kind: 'relative-in-package',
                                 packageName: importResource.packageName,
                                 sourcePath: '',
-                                importPath: path.join((_g = importResource.importPath) !== null && _g !== void 0 ? _g : '', typings.startsWith('./') ? typings.slice(2) : typings),
+                                importPath: path.join((_c = importResource.importPath) !== null && _c !== void 0 ? _c : '', typings.startsWith('./') ? typings.slice(2) : typings),
                                 isTypeOnly: importResource.isTypeOnly
                             }];
                     case 4:
                         typingPackageName = "@types/".concat(importResource.packageName.startsWith('@')
                             ? importResource.packageName.slice(1).replace(/\//, '__')
                             : importResource.packageName);
-                        return [4 /*yield*/, this.resolvePackageJson(typingPackageName, (_h = this.versions) === null || _h === void 0 ? void 0 : _h[typingPackageName])];
+                        return [4, this.resolvePackageJson(typingPackageName, (_d = this.versions) === null || _d === void 0 ? void 0 : _d[typingPackageName])];
                     case 5:
-                        pkgJsonTypings = _k.sent();
+                        pkgJsonTypings = _f.sent();
                         if (pkgJsonTypings) {
                             pkg_1 = JSON.parse(pkgJsonTypings);
                             if (pkg_1.typings || pkg_1.types) {
@@ -326,11 +326,11 @@ var ImportResolver = /** @class */ (function () {
                                     success: true,
                                 }, this.options);
                                 this.setVersion(typingPackageName, pkg_1.version);
-                                return [2 /*return*/, {
+                                return [2, {
                                         kind: 'relative-in-package',
                                         packageName: typingPackageName,
                                         sourcePath: '',
-                                        importPath: path.join((_j = importResource.importPath) !== null && _j !== void 0 ? _j : '', typings.startsWith('./') ? typings.slice(2) : typings),
+                                        importPath: path.join((_e = importResource.importPath) !== null && _e !== void 0 ? _e : '', typings.startsWith('./') ? typings.slice(2) : typings),
                                         isTypeOnly: importResource.isTypeOnly
                                     }];
                             }
@@ -341,12 +341,12 @@ var ImportResolver = /** @class */ (function () {
                         else {
                             (0, invokeUpdate_1.invokeUpdate)(failedProgressUpdate, this.options);
                         }
-                        _k.label = 6;
-                    case 6: return [3 /*break*/, 8];
+                        _f.label = 6;
+                    case 6: return [3, 8];
                     case 7:
                         (0, invokeUpdate_1.invokeUpdate)(failedProgressUpdate, this.options);
-                        _k.label = 8;
-                    case 8: return [2 /*return*/];
+                        _f.label = 8;
+                    case 8: return [2];
                 }
             });
         });
@@ -367,9 +367,9 @@ var ImportResolver = /** @class */ (function () {
                         };
                         pkgName = importResource.packageName;
                         version = this.getVersion(importResource.packageName);
-                        if (!PatchPaths.pathContainsSourceExt(importResource.importPath)) return [3 /*break*/, 2];
+                        if (!PatchPaths.pathContainsSourceExt(importResource.importPath)) return [3, 2];
                         fullPath = path.join(importResource.sourcePath, PatchPaths.pathReplaceAnySourceExt(importResource.importPath, '.d.ts'));
-                        return [4 /*yield*/, this.resolveSourceFile(pkgName, version, fullPath)];
+                        return [4, this.resolveSourceFile(pkgName, version, fullPath)];
                     case 1:
                         source = _b.sent();
                         if (source) {
@@ -378,28 +378,28 @@ var ImportResolver = /** @class */ (function () {
                                 path: path.join(pkgName, fullPath),
                                 success: true,
                             }, this.options);
-                            return [2 /*return*/, { source: source, at: fullPath }];
+                            return [2, { source: source, at: fullPath }];
                         }
-                        return [3 /*break*/, 11];
+                        return [3, 11];
                     case 2:
                         appends = ['.d.ts', '/index.d.ts', '.ts', '.tsx', '/index.ts', '/index.tsx'];
-                        if (!appends.map(function (append) { return importResource.importPath.endsWith(append); }).reduce(function (a, b) { return a || b; }, false)) return [3 /*break*/, 4];
-                        return [4 /*yield*/, this.resolveSourceFile(pkgName, version, path.join(importResource.sourcePath, importResource.importPath))];
+                        if (!appends.map(function (append) { return importResource.importPath.endsWith(append); }).reduce(function (a, b) { return a || b; }, false)) return [3, 4];
+                        return [4, this.resolveSourceFile(pkgName, version, path.join(importResource.sourcePath, importResource.importPath))];
                     case 3:
                         source = _b.sent();
                         if (source) {
-                            return [2 /*return*/, { source: source, at: path.join(importResource.sourcePath, importResource.importPath) }];
+                            return [2, { source: source, at: path.join(importResource.sourcePath, importResource.importPath) }];
                         }
-                        return [3 /*break*/, 11];
+                        return [3, 11];
                     case 4:
                         _b.trys.push([4, 9, 10, 11]);
                         appends_1 = __values(appends), appends_1_1 = appends_1.next();
                         _b.label = 5;
                     case 5:
-                        if (!!appends_1_1.done) return [3 /*break*/, 8];
+                        if (!!appends_1_1.done) return [3, 8];
                         append = appends_1_1.value;
                         fullPath = path.join(importResource.sourcePath, PatchPaths.pathAppendOrReplaceSourceExt(importResource.importPath, append));
-                        return [4 /*yield*/, this.resolveSourceFile(pkgName, version, fullPath)];
+                        return [4, this.resolveSourceFile(pkgName, version, fullPath)];
                     case 6:
                         source = _b.sent();
                         (0, invokeUpdate_1.invokeUpdate)({
@@ -413,31 +413,31 @@ var ImportResolver = /** @class */ (function () {
                                 path: path.join(pkgName, fullPath),
                                 success: true,
                             }, this.options);
-                            return [2 /*return*/, { source: source, at: fullPath }];
+                            return [2, { source: source, at: fullPath }];
                         }
                         _b.label = 7;
                     case 7:
                         appends_1_1 = appends_1.next();
-                        return [3 /*break*/, 5];
-                    case 8: return [3 /*break*/, 11];
+                        return [3, 5];
+                    case 8: return [3, 11];
                     case 9:
                         e_4_1 = _b.sent();
                         e_4 = { error: e_4_1 };
-                        return [3 /*break*/, 11];
+                        return [3, 11];
                     case 10:
                         try {
                             if (appends_1_1 && !appends_1_1.done && (_a = appends_1.return)) _a.call(appends_1);
                         }
                         finally { if (e_4) throw e_4.error; }
-                        return [7 /*endfinally*/];
-                    case 11: return [4 /*yield*/, this.resolvePackageJson(pkgName, version, path.join(importResource.sourcePath, importResource.importPath))];
+                        return [7];
+                    case 11: return [4, this.resolvePackageJson(pkgName, version, path.join(importResource.sourcePath, importResource.importPath))];
                     case 12:
                         pkgJson = _b.sent();
-                        if (!pkgJson) return [3 /*break*/, 14];
+                        if (!pkgJson) return [3, 14];
                         types = JSON.parse(pkgJson).types;
-                        if (!types) return [3 /*break*/, 14];
+                        if (!types) return [3, 14];
                         fullPath = path.join(importResource.sourcePath, importResource.importPath, types);
-                        return [4 /*yield*/, this.resolveSourceFile(pkgName, version, fullPath)];
+                        return [4, this.resolveSourceFile(pkgName, version, fullPath)];
                     case 13:
                         source = _b.sent();
                         if (source) {
@@ -446,12 +446,12 @@ var ImportResolver = /** @class */ (function () {
                                 path: path.join(pkgName, fullPath),
                                 success: true,
                             }, this.options);
-                            return [2 /*return*/, { source: source, at: fullPath }];
+                            return [2, { source: source, at: fullPath }];
                         }
                         _b.label = 14;
                     case 14:
                         (0, invokeUpdate_1.invokeUpdate)(failedProgressUpdate, this.options);
-                        return [2 /*return*/, null];
+                        return [2, null];
                 }
             });
         });
@@ -464,17 +464,14 @@ var ImportResolver = /** @class */ (function () {
         var _a, _b;
         this.versions = versions;
         (_b = (_a = this.options).onUpdateVersions) === null || _b === void 0 ? void 0 : _b.call(_a, versions);
-        // TODO reload packages whose version has changed
     };
     ImportResolver.prototype.setVersion = function (packageName, version) {
         var _a;
         this.setVersions(__assign(__assign({}, this.versions), (_a = {}, _a[packageName] = version, _a)));
     };
     ImportResolver.prototype.createModel = function (source, uri, isTypeOnly) {
-        // console.log(`before: createModel( ${ uri.toString(true)} )`, isTypeOnly)
         if (!isTypeOnly)
             uri = uri.with({ path: uri.path.replace('@types/', '') });
-        // console.log(`after: createModel( ${ uri.toString(true)} )`)
         if (!this.monaco.editor.getModel(uri)) {
             this.monaco.editor.createModel(source, 'typescript', uri);
             this.newImportsResolved = true;
@@ -492,33 +489,33 @@ var ImportResolver = /** @class */ (function () {
                         uri = path.join(packageName + (version ? "@".concat(version) : ''), subPath !== null && subPath !== void 0 ? subPath : '', 'package.json');
                         isAvailable = false;
                         content = undefined;
-                        if (!this.cache.isFileAvailable) return [3 /*break*/, 2];
-                        return [4 /*yield*/, this.cache.isFileAvailable(uri)];
+                        if (!this.cache.isFileAvailable) return [3, 2];
+                        return [4, this.cache.isFileAvailable(uri)];
                     case 1:
                         isAvailable = _b.sent();
-                        return [3 /*break*/, 4];
-                    case 2: return [4 /*yield*/, this.cache.getFile(uri)];
+                        return [3, 4];
+                    case 2: return [4, this.cache.getFile(uri)];
                     case 3:
                         content = _b.sent();
                         isAvailable = content !== undefined;
                         _b.label = 4;
                     case 4:
-                        if (!isAvailable) return [3 /*break*/, 8];
-                        if (!(content !== null && content !== void 0)) return [3 /*break*/, 5];
+                        if (!isAvailable) return [3, 8];
+                        if (!(content !== null && content !== void 0)) return [3, 5];
                         _a = content;
-                        return [3 /*break*/, 7];
-                    case 5: return [4 /*yield*/, this.cache.getFile(uri)];
+                        return [3, 7];
+                    case 5: return [4, this.cache.getFile(uri)];
                     case 6:
                         _a = (_b.sent());
                         _b.label = 7;
-                    case 7: return [2 /*return*/, _a];
-                    case 8: return [4 /*yield*/, this.sourceResolver.resolvePackageJson(packageName, version, subPath)];
+                    case 7: return [2, _a];
+                    case 8: return [4, this.sourceResolver.resolvePackageJson(packageName, version, subPath)];
                     case 9:
                         content = _b.sent();
                         if (content) {
                             this.cache.storeFile(uri, content);
                         }
-                        return [2 /*return*/, content];
+                        return [2, content];
                 }
             });
         });
@@ -532,31 +529,31 @@ var ImportResolver = /** @class */ (function () {
                         uri = path.join(packageName + (version ? "@".concat(version) : ''), filePath);
                         isAvailable = false;
                         content = undefined;
-                        if (!this.cache.isFileAvailable) return [3 /*break*/, 2];
-                        return [4 /*yield*/, this.cache.isFileAvailable(uri)];
+                        if (!this.cache.isFileAvailable) return [3, 2];
+                        return [4, this.cache.isFileAvailable(uri)];
                     case 1:
                         isAvailable = _b.sent();
-                        return [3 /*break*/, 4];
-                    case 2: return [4 /*yield*/, this.cache.getFile(uri)];
+                        return [3, 4];
+                    case 2: return [4, this.cache.getFile(uri)];
                     case 3:
                         content = _b.sent();
                         isAvailable = content !== undefined;
                         _b.label = 4;
                     case 4:
-                        if (!isAvailable) return [3 /*break*/, 8];
+                        if (!isAvailable) return [3, 8];
                         (0, invokeUpdate_1.invokeUpdate)({
                             type: 'LoadedFromCache',
                             importPath: uri,
                         }, this.options);
-                        if (!(content !== null && content !== void 0)) return [3 /*break*/, 5];
+                        if (!(content !== null && content !== void 0)) return [3, 5];
                         _a = content;
-                        return [3 /*break*/, 7];
-                    case 5: return [4 /*yield*/, this.cache.getFile(uri)];
+                        return [3, 7];
+                    case 5: return [4, this.cache.getFile(uri)];
                     case 6:
                         _a = (_b.sent());
                         _b.label = 7;
-                    case 7: return [2 /*return*/, _a];
-                    case 8: return [4 /*yield*/, this.sourceResolver.resolveSourceFile(packageName, version, filePath)];
+                    case 7: return [2, _a];
+                    case 8: return [4, this.sourceResolver.resolveSourceFile(packageName, version, filePath)];
                     case 9:
                         content = _b.sent();
                         if (content) {
@@ -566,7 +563,7 @@ var ImportResolver = /** @class */ (function () {
                             }, this.options);
                             this.cache.storeFile(uri, content);
                         }
-                        return [2 /*return*/, content];
+                        return [2, content];
                 }
             });
         });

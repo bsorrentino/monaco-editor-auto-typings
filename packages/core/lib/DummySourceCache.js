@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DummySourceCache = void 0;
-var DummySourceCache = /** @class */ (function () {
+var DummySourceCache = (function () {
     function DummySourceCache() {
     }
     DummySourceCache.prototype.getFile = function (uri) {

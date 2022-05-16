@@ -37,15 +37,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UnpkgSourceResolver = void 0;
-var UnpkgSourceResolver = /** @class */ (function () {
+var UnpkgSourceResolver = (function () {
     function UnpkgSourceResolver() {
     }
     UnpkgSourceResolver.prototype.resolvePackageJson = function (packageName, version, subPath) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.resolveFile("https://unpkg.com/".concat(packageName).concat(version ? "@".concat(version) : '').concat(subPath ? "/".concat(subPath) : '', "/package.json"))];
-                    case 1: return [2 /*return*/, _a.sent()];
+                    case 0: return [4, this.resolveFile("https://unpkg.com/".concat(packageName).concat(version ? "@".concat(version) : '').concat(subPath ? "/".concat(subPath) : '', "/package.json"))];
+                    case 1: return [2, _a.sent()];
                 }
             });
         });
@@ -54,8 +54,8 @@ var UnpkgSourceResolver = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.resolveFile("https://unpkg.com/".concat(packageName).concat(version ? "@".concat(version) : '', "/").concat(path))];
-                    case 1: return [2 /*return*/, _a.sent()];
+                    case 0: return [4, this.resolveFile("https://unpkg.com/".concat(packageName).concat(version ? "@".concat(version) : '', "/").concat(path))];
+                    case 1: return [2, _a.sent()];
                 }
             });
         });
@@ -65,21 +65,21 @@ var UnpkgSourceResolver = /** @class */ (function () {
             var res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, fetch(url, { method: 'GET' })];
+                    case 0: return [4, fetch(url, { method: 'GET' })];
                     case 1:
                         res = _a.sent();
-                        if (!res.ok) return [3 /*break*/, 3];
-                        return [4 /*yield*/, res.text()];
-                    case 2: return [2 /*return*/, _a.sent()];
+                        if (!res.ok) return [3, 3];
+                        return [4, res.text()];
+                    case 2: return [2, _a.sent()];
                     case 3:
                         if (res.status === 404) {
-                            return [2 /*return*/, ''];
+                            return [2, ''];
                         }
                         else {
                             throw Error("Error other than 404 while fetching from Unpkg at ".concat(url));
                         }
                         _a.label = 4;
-                    case 4: return [2 /*return*/];
+                    case 4: return [2];
                 }
             });
         });

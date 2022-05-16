@@ -88,7 +88,7 @@ var ImportResolver_1 = require("./ImportResolver");
 var path = __importStar(require("path"));
 var invokeUpdate_1 = require("./invokeUpdate");
 var RecursionDepth_1 = require("./RecursionDepth");
-var AutoTypings = /** @class */ (function () {
+var AutoTypings = (function () {
     function AutoTypings(editor, options) {
         var _this = this;
         this.editor = editor;
@@ -114,10 +114,10 @@ var AutoTypings = /** @class */ (function () {
                         if ((options === null || options === void 0 ? void 0 : options.shareCache) && options.sourceCache && !AutoTypings.sharedCache) {
                             AutoTypings.sharedCache = options.sourceCache;
                         }
-                        if (!((_a = options === null || options === void 0 ? void 0 : options.monaco) !== null && _a !== void 0)) return [3 /*break*/, 1];
+                        if (!((_a = options === null || options === void 0 ? void 0 : options.monaco) !== null && _a !== void 0)) return [3, 1];
                         _c = _a;
-                        return [3 /*break*/, 3];
-                    case 1: return [4 /*yield*/, Promise.resolve().then(function () { return __importStar(require('monaco-editor')); })];
+                        return [3, 3];
+                    case 1: return [4, Promise.resolve().then(function () { return __importStar(require('monaco-editor')); })];
                     case 2:
                         _c = (_d.sent());
                         _d.label = 3;
@@ -126,7 +126,7 @@ var AutoTypings = /** @class */ (function () {
                         if (!monacoInstance) {
                             throw new Error('monacoInstance not found, you can specify the monaco instance via options.monaco');
                         }
-                        return [2 /*return*/, new AutoTypings(editor, __assign(__assign({ fileRootPath: 'inmemory://model/', onlySpecifiedPackages: false, preloadPackages: false, shareCache: false, dontAdaptEditorOptions: false, dontRefreshModelValueAfterResolvement: false, sourceCache: (_b = AutoTypings.sharedCache) !== null && _b !== void 0 ? _b : new DummySourceCache_1.DummySourceCache(), sourceResolver: new UnpkgSourceResolver_1.UnpkgSourceResolver(), debounceDuration: 4000, fileRecursionDepth: 10, packageRecursionDepth: 3 }, options), { monaco: monacoInstance }))];
+                        return [2, new AutoTypings(editor, __assign(__assign({ fileRootPath: 'inmemory://model/', onlySpecifiedPackages: false, preloadPackages: false, shareCache: false, dontAdaptEditorOptions: false, dontRefreshModelValueAfterResolvement: false, sourceCache: (_b = AutoTypings.sharedCache) !== null && _b !== void 0 ? _b : new DummySourceCache_1.DummySourceCache(), sourceResolver: new UnpkgSourceResolver_1.UnpkgSourceResolver(), debounceDuration: 4000, fileRecursionDepth: 10, packageRecursionDepth: 3 }, options), { monaco: monacoInstance }))];
                 }
             });
         });
@@ -155,10 +155,10 @@ var AutoTypings = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.options.sourceCache.clear()];
+                    case 0: return [4, this.options.sourceCache.clear()];
                     case 1:
                         _a.sent();
-                        return [2 /*return*/];
+                        return [2];
                 }
             });
         });
@@ -181,11 +181,11 @@ var AutoTypings = /** @class */ (function () {
             this.debounceTimer = setTimeout(function () { return __awaiter(_this, void 0, void 0, function () {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
-                        case 0: return [4 /*yield*/, this.resolveContents()];
+                        case 0: return [4, this.resolveContents()];
                         case 1:
                             _a.sent();
                             this.debounceTimer = undefined;
-                            return [2 /*return*/];
+                            return [2];
                     }
                 });
             }); }, this.options.debounceDuration);
@@ -210,10 +210,10 @@ var AutoTypings = /** @class */ (function () {
                         _b.label = 1;
                     case 1:
                         _b.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, this.importResolver.resolveImportsInFile(content.join('\n'), path.dirname(model.uri.toString()), new RecursionDepth_1.RecursionDepth(this.options))];
+                        return [4, this.importResolver.resolveImportsInFile(content.join('\n'), path.dirname(model.uri.toString()), new RecursionDepth_1.RecursionDepth(this.options))];
                     case 2:
                         _b.sent();
-                        return [3 /*break*/, 4];
+                        return [3, 4];
                     case 3:
                         e_2 = _b.sent();
                         if (this.options.onError) {
@@ -222,7 +222,7 @@ var AutoTypings = /** @class */ (function () {
                         else {
                             throw e_2;
                         }
-                        return [3 /*break*/, 4];
+                        return [3, 4];
                     case 4:
                         if (this.importResolver.wereNewImportsResolved()) {
                             if (!this.options.dontRefreshModelValueAfterResolvement) {
@@ -235,7 +235,7 @@ var AutoTypings = /** @class */ (function () {
                             this.importResolver.resetNewImportsResolved();
                         }
                         this.isResolving = false;
-                        return [2 /*return*/];
+                        return [2];
                 }
             });
         });

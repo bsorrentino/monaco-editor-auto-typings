@@ -37,14 +37,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LocalStorageCache = void 0;
-var LocalStorageCache = /** @class */ (function () {
+var LocalStorageCache = (function () {
     function LocalStorageCache() {
     }
     LocalStorageCache.prototype.getFile = function (uri) {
         var _a;
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_b) {
-                return [2 /*return*/, (_a = localStorage.getItem(LocalStorageCache.LOCALSTORAGE_PREFIX + uri)) !== null && _a !== void 0 ? _a : undefined];
+                return [2, (_a = localStorage.getItem(LocalStorageCache.LOCALSTORAGE_PREFIX + uri)) !== null && _a !== void 0 ? _a : undefined];
             });
         });
     };
@@ -52,7 +52,7 @@ var LocalStorageCache = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 localStorage.setItem(LocalStorageCache.LOCALSTORAGE_PREFIX + uri, content);
-                return [2 /*return*/];
+                return [2];
             });
         });
     };
@@ -66,7 +66,7 @@ var LocalStorageCache = /** @class */ (function () {
                         localStorage.removeItem(key);
                     }
                 }
-                return [2 /*return*/];
+                return [2];
             });
         });
     };

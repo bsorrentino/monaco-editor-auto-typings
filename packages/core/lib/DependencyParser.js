@@ -50,46 +50,39 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DependencyParser = void 0;
 var path = __importStar(require("path"));
-var DependencyParser = /** @class */ (function () {
+var processImportPath = function (importPath) {
+    return {
+        isRelative: importPath.startsWith('.') || importPath.endsWith('.d.ts'),
+        isScoped: importPath.startsWith('@'),
+        value: importPath
+    };
+};
+var DependencyParser = (function () {
     function DependencyParser() {
         this.REGEX_CLEAN = /[\n|\r]/g;
         this.REGEX_DETECT_IMPORT = /(?:(?:import|export)(?:.)*?from\s+["']([^"']+)["'])|(?:\/+\s+<reference\s+(?:path|types)=["']([^"']+)["']\s+\/>)/g;
     }
     DependencyParser.prototype.parseDependencies = function (source, parent) {
         var _this = this;
-        var cleaned = source; // source.replace(this.REGEX_CLEAN, '');
+        var cleaned = source;
         var result = __spreadArray([], __read(cleaned.matchAll(this.REGEX_DETECT_IMPORT)), false);
-        // console.log( 'REGEX_DETECT_IMPORT', result)
         return result
             .map(function (x) { var _a; return ({ path: (_a = x[1]) !== null && _a !== void 0 ? _a : x[2], isTypeOnly: x[1] === undefined }); })
             .filter(function (x) { return !!x.path; })
-            .map(function (x) {
-            var result = _this.resolvePath(x.path, x.isTypeOnly, parent);
-            return result;
-        });
+            .map(function (x) { return _this.resolvePath({ path: processImportPath(x.path), isTypeOnly: x.isTypeOnly }, parent); });
     };
-    /**
-     * [resolvePath description]
-     *
-     * @param   {string}              importPath  [importPath description]
-     * @param   {boolean}             isTypeOnly  [isTypeOnly description]
-     * @param   {ImportResourcePath}  parent      [parent description]
-     *
-     * @return  {ImportResourcePath}              [return description]
-     */
-    DependencyParser.prototype.resolvePath = function (importPath, isTypeOnly, parent) {
-        var isImportPathRelative = function () { return importPath.startsWith('.') || importPath.endsWith('.d.ts'); };
-        var isImportPathScoped = function () { return importPath.startsWith('@'); };
+    DependencyParser.prototype.resolvePath = function (importInfo, parent) {
+        var _a = importInfo.path, isRelative = _a.isRelative, isScoped = _a.isScoped, pathToResolve = _a.value, isTypeOnly = importInfo.isTypeOnly;
         if (typeof parent === 'string') {
-            if (isImportPathRelative()) {
+            if (isRelative) {
                 return {
                     kind: 'relative',
-                    importPath: importPath,
+                    importPath: pathToResolve,
                     sourcePath: parent,
                 };
             }
-            else if (isImportPathScoped()) {
-                var segments = importPath.split('/');
+            else if (isScoped) {
+                var segments = pathToResolve.split('/');
                 return {
                     kind: 'package',
                     packageName: "".concat(segments[0], "/").concat(segments[1]),
@@ -98,7 +91,7 @@ var DependencyParser = /** @class */ (function () {
                 };
             }
             else {
-                var segments = importPath.split('/');
+                var segments = pathToResolve.split('/');
                 return {
                     kind: 'package',
                     packageName: segments[0],
@@ -114,17 +107,17 @@ var DependencyParser = /** @class */ (function () {
                 case 'relative':
                     throw Error('TODO2?');
                 case 'relative-in-package':
-                    if (isImportPathRelative()) {
+                    if (isRelative) {
                         return {
                             kind: 'relative-in-package',
                             packageName: parent.packageName,
                             sourcePath: path.join(parent.sourcePath, parent.importPath),
-                            importPath: importPath,
+                            importPath: pathToResolve,
                             isTypeOnly: isTypeOnly
                         };
                     }
-                    else if (isImportPathScoped()) {
-                        var segments = importPath.split('/');
+                    else if (isScoped) {
+                        var segments = pathToResolve.split('/');
                         return {
                             kind: 'package',
                             packageName: "".concat(segments[0], "/").concat(segments[1]),
@@ -133,7 +126,7 @@ var DependencyParser = /** @class */ (function () {
                         };
                     }
                     else {
-                        var segments = importPath.split('/');
+                        var segments = pathToResolve.split('/');
                         return {
                             kind: 'package',
                             packageName: segments[0],
